@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  /* Route90 palette — exact, locked in CLAUDE.md. Do not adjust. */
+  --color-forest: #1F3A2E;
+  --color-ink: #0E0E0E;
+  --color-cream: #F0EAD6;
+  --color-mustard: #E8A824;
+
+  /* Zero border radius — structural, not per-utility. A stray rounded-* cannot
+     reintroduce corners because every radius token resolves to 0. */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+
+  /* Type roles — "Interstate", locked in CLAUDE.md. The --font-* on the right are
+     set on <html> by next/font (see app/layout.tsx). Utilities font-display /
+     font-body / font-mono generate from these; --font-sans is the base default. */
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-body: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-martian-mono), ui-monospace, monospace;
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+}
+
+/* Lenis smooth scroll. The `lenis` class is added to <html> only when Lenis
+   initializes — under reduced motion it never does, so native scroll is kept. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}

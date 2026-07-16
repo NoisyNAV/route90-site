@@ -1,0 +1,5 @@
+# Only these two dependencies are allowed to run install build scripts.
+# next/image needs sharp; eslint-config-next pulls unrs-resolver. Nothing else.
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
