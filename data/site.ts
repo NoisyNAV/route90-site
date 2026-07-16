@@ -37,6 +37,12 @@ export const site = {
 
   about: {
     eyebrow: "WHO — SECTION 01",
+    // Locked section title from the copy-doc rename (Ch 01: "Who's Behind It" →
+    // "About Route90", docs/route90-full-site-copy.md). Section eyebrow/numbering
+    // is shown via the "CHAPTER 01" ChapterTag; the stale "WHO — SECTION 01"
+    // string above is retained verbatim in data but not rendered (avoids the
+    // CHAPTER-vs-SECTION drift flagged in Phase 4).
+    headline: "About Route90",
     pullQuote:
       "Every small business deserves a brand that looks like it belongs — bold, clear, impossible to miss.",
     body: "Route90 is a Winnipeg design and development studio run by one founder who talks directly with every client. No account managers, no handoffs — just clear planning, honest pricing, and work that doesn't take a third revision to get right.",

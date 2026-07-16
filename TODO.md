@@ -3,7 +3,7 @@
 Phase tracking. Updated after every phase, before moving to the next one.
 See `route90-BUILD-MANUAL.md` in the vault for the full prompts and gates.
 
-**Current phase:** 6 — Remaining sections (About, Pricing, ticker/nav shells).
+**Current phase:** 8 — Contact form + Resend.
 **Last updated:** 2026-07-16
 
 ---
@@ -16,8 +16,8 @@ See `route90-BUILD-MANUAL.md` in the vault for the full prompts and gates.
 - [x] **3 — Shared primitives** · Opus · using-superpowers, frontend-design
 - [x] **4 — Data layer** · Sonnet · using-superpowers
 - [x] **5 — Services section (the pattern)** · Opus · using-superpowers, frontend-design
-- [ ] **6 — Remaining sections** · Sonnet · using-superpowers, frontend-design
-- [ ] **7 — Work section (expandable cards)** · Opus · using-superpowers, frontend-design
+- [x] **6 — Remaining sections** · Sonnet · using-superpowers, frontend-design
+- [x] **7 — Work section (expandable cards)** · Opus · using-superpowers, frontend-design
 - [ ] **8 — Contact form + Resend** · Sonnet · using-superpowers
 - [ ] **9 — Audit + verification** · Opus · using-superpowers, web-design-guidelines, vercel-react-best-practices
 - [ ] **10 — Deploy** · Haiku · no skills
@@ -194,4 +194,57 @@ After each phase, append an entry:
 - Screenshot harness note: `SnapIn` gates content on real viewport intersection, so the capture script
   (`review/phase-05/shot.mjs`) step-scrolls the full page before the full-page shot — a straight
   jump-to-bottom leaves mid panels at their hidden end-state. Not a layout bug.
+- Not committed — working tree only.
+
+### Phase 6 — Remaining sections — 2026-07-16
+- Built the full single-page assembly in the locked order (`app/page.tsx`): Nav → Hero → TickerStrip
+  → About (Ch01) → Services (Ch02) → Work (Ch03, placeholder) → Pricing (Ch04) → Contact (Ch05) →
+  Footer. New components: `Nav`, `Hero`, `TickerStrip`, `About`, `WorkSection` (placeholder),
+  `PricingSection` + `PricingTable`, `ContactSection`, `Footer`, and shared `GridTexture`.
+- Reference-driven fidelity: `GridTexture` values are pixel-sampled from the Emergent export
+  (cream 1px lines, 80px cells, opacity 0.12); Nav dashed-mustard bottom edge, About green-accent
+  12-col panel, and the marquee (28s) all taken from the export markup — but LOCKED naming overrode
+  the export's stale "Who"/"The Miles" nav labels (used About/Services/Work/Pricing instead).
+- Reused patterns only (no new visual language): 2px ink borders, zero radius, no shadow, `SnapIn`
+  reveals, ServicePanel-style forest-header/cream-body blocks for Pricing. Marquee keyframes added to
+  `globals.css`, disabled under `prefers-reduced-motion`.
+- Data additions (locked copy, not invented): `site.nav.links` (section anchors, labels from the
+  page order + copy-doc renames) + `site.nav.ctaHref`; `site.about.headline = "About Route90"` (copy-doc
+  Ch01 rename). Bundle rows show plain names (90A/90B prefix stripped at render only; data untouched).
+- Deliberate deviation: Pricing "from" prices are forest (not mustard) on cream — mustard-on-cream is
+  on the KNOWN-ISSUES contrast watchlist and prices must be legible. Forest passes AA, stays on-brand.
+- Gate: `tsc --noEmit` ✅ · `lint` ✅ · `build` ✅ (static). Runtime proof: Playwright full-page
+  captures at 375×812 + 1440×900 → `review/phase-06/full-page-{mobile,desktop}-*.png`. Desktop +
+  mobile both verified: Nav/Hero grid continuous, all sections render, mobile stacks cleanly.
+- Deferred / flagged:
+  - Work section is a PLACEHOLDER (static collapsed cards + note) — expandable cards are Phase 7.
+  - Contact form is a reserved bordered slot — RHF+Zod+Resend wiring is Phase 8.
+  - Nav section-links are `hidden md:flex`; no mobile hamburger menu yet (out of scope this phase) —
+    on <768px only the wordmark + "Get in Touch" CTA show. Logged to KNOWN-ISSUES.
+- Not committed — working tree only.
+
+### Phase 7 — Work section (expandable cards) — 2026-07-16
+- Replaced the Phase 6 Work placeholder with the real interaction. New components: `WorkGallery`
+  (client island — holds open-item state, `AnimatePresence`, restores focus to the trigger on close),
+  `WorkCard` (collapsed "browser-window" card from the export: ink chrome bar + diamond dots + mono
+  URL/slug label → thumbnail with hover-zoom → forest title/status bar → cream teaser + "View case
+  study →"; the whole card is a button), and `WorkCardModal` (expanded case-study dialog). `WorkSection`
+  stays a server component; only the grid is client. Grid is unbounded (any N; 4 today).
+- Dialog: snaps open over an ink/85 backdrop (SNAP transition; instant under reduced motion via
+  `useReducedMotion`). Accessible — `role="dialog"` + `aria-modal`, labelled by the title, Escape +
+  backdrop-click close, focus moved in on open + trapped (Tab cycles), focus returned to the opening
+  card on close, background scroll locked, scroll area marked `data-lenis-prevent`. Shows the media
+  gallery (`item.media`, image/video), the full `description`, and a "View Project ↗" external link
+  only when `item.link` exists (SplitHouse/Invoicer/Trucking have none → no button; BorderLog does).
+- Reused patterns only: 2px cream/ink borders, zero radius, no shadow, `SnapIn` card reveals, next/image
+  (lint-clean vs `<img>`). No new visual language introduced.
+- Gate: `tsc --noEmit` ✅ · `lint` ✅ · `build` ✅ (static). Runtime proof: Playwright drove the click —
+  `review/phase-07/work-collapsed-{mobile,desktop}.png` (all 4 cards) + `work-modal-{mobile,desktop}.png`
+  (SplitHouse dialog open). Verified: cards render, dialog opens/animates, description + backdrop correct,
+  no View-Project button when link absent, mobile stacks + dialog scrolls.
+- Resolves the KNOWN-ISSUES "Work card focus trap" watch item (focus trap + return-focus implemented).
+- Deferred: media are still the 1×1 placeholder PNGs (launch blocker, already tracked). Contact form
+  is Phase 8.
+- Screenshot harness note: `SnapIn` gates on intersection, so `review/phase-07/shot.mjs` step-scrolls
+  to reveal all cards before the collapsed capture (else row-2 card stays at opacity 0). Not a bug.
 - Not committed — working tree only.

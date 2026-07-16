@@ -50,3 +50,26 @@ html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+
+/* TickerStrip marquee. Content is duplicated 2× inside the track; translating
+   the track -50% scrolls exactly one copy width, then loops seamlessly. Duration
+   matches the original Emergent export (28s linear). Disabled under reduced
+   motion — the strip then renders static, no scroll. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+    transform: none;
+  }
+}

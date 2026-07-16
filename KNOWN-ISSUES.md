@@ -14,7 +14,7 @@ It only lands here if it's staying broken for a while.
 
 | # | Issue | Severity | Phase found | Notes |
 |---|---|---|---|---|
-| — | _(none yet)_ | | | |
+| 1 | No mobile nav menu | Minor | Phase 6 | Nav section-links are `hidden md:flex`; on <768px only the wordmark + "Get in Touch" CTA show. Needs a hamburger/drawer. Revisit at Phase 9 audit. |
 
 Severity scale: **Blocker** (can't launch) · **Major** (visible to users,
 launching anyway) · **Minor** (cosmetic/internal) · **Deferred** (deliberate,
@@ -49,7 +49,7 @@ Things that aren't broken but are worth keeping an eye on.
 | Framer Motion + Lenis bundle size | Two motion-adjacent libs. Check the bundle at Phase 9; if Lenis isn't earning its ~3kb, drop it. |
 | Contrast: mustard `#E8A824` on cream `#F0EAD6` | Likely fails WCAG AA for body text. Fine for large display type / borders — flag any small text using this pair at Phase 9. |
 | Contrast: cream on forest green | Should pass, but verify rather than assume at Phase 9. |
-| Work card focus trap | Expandable cards need proper focus management. Easy to regress if the card is refactored later. |
+| Work card focus trap | **Implemented in Phase 7** (`WorkCardModal`: focus moved in on open, Tab trapped, focus returned to the trigger on close, Escape + backdrop close). Kept on the watch list because it's easy to regress if the dialog is refactored — re-verify at the Phase 9 audit with a keyboard-only pass. |
 
 ---
 
