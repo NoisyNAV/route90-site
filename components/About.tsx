@@ -45,7 +45,14 @@ export function About() {
               {quoteTail ? (
                 <>
                   {" — "}
-                  <span className="text-mustard">{quoteTail}</span>
+                  {/* Mustard HIGHLIGHT (bg), not mustard text: ink-on-mustard is
+                      9.2:1 (AA/AAA) where mustard-on-cream text was 1.74:1 (fails
+                      AA). Restores the "mustard-highlighted tail" intent noted at
+                      the top of this file. box-decoration-clone keeps the marker
+                      block intact across line wraps; zero radius is global. */}
+                  <span className="box-decoration-clone bg-mustard px-1.5 text-ink">
+                    {quoteTail}
+                  </span>
                 </>
               ) : null}
             </blockquote>
