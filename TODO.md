@@ -3,7 +3,7 @@
 Phase tracking. Updated after every phase, before moving to the next one.
 See `route90-BUILD-MANUAL.md` in the vault for the full prompts and gates.
 
-**Current phase:** 8 — Contact form + Resend.
+**Current phase:** 8 — Contact form + Resend (code-complete; live Resend send pending owner confirmation).
 **Last updated:** 2026-07-16
 
 ---
@@ -247,4 +247,26 @@ After each phase, append an entry:
   is Phase 8.
 - Screenshot harness note: `SnapIn` gates on intersection, so `review/phase-07/shot.mjs` step-scrolls
   to reveal all cards before the collapsed capture (else row-2 card stays at opacity 0). Not a bug.
+- Not committed — working tree only.
+
+### Phase 8 — Contact form + Resend — 2026-07-16 (code-complete; live send pending owner confirm)
+- Built: `lib/contact-schema.ts` (ONE Zod schema shared by client + server; service dropdown options
+  derived from `data/services.ts`, never hardcoded; honeypot `website` field), `components/ContactForm.tsx`
+  (RHF + zodResolver, inline errors, submitting/success/error states), `app/api/contact/route.ts` (POST,
+  re-validates with the same schema, silent honeypot drop, Resend send, typed JSON + status codes,
+  surfaces Resend errors). Slotted the live form into `ContactSection.tsx` (Phase 6 placeholder removed).
+- Colors: errors + success/error panels use **mustard** — a locked hex — so no new color introduced.
+  Submit button = "Send It" verbatim from `data/site.ts`, disabled/"Sending…" while in flight.
+- Security: `.env.local` gitignored (verified — `.gitignore` line 34 `.env*`). RESEND_API_KEY read
+  server-side only in the route, never sent to the client. Sends to `process.env.CONTACT_TO_EMAIL`
+  (navi904133@gmail.com per example) from `CONTACT_FROM_EMAIL`.
+- Gate: `tsc --noEmit` ✅ · `lint` ✅ (added `review/**` to eslint ignores — gitignored scratch) ·
+  `build` ✅ (`/api/contact` = dynamic ƒ).
+- Proof so far (no real email sent): Playwright captured empty / validation / loading / success / error
+  at 375 + 1440 → `review/phase-08/form-*.png`. Server curl: honeypot (website filled) → 200
+  `{ok:true,delivered:false}` (no send); empty body → 422 with per-field errors. Both correct.
+- PENDING (owner gate): the REAL Resend send. Key IS present in `.env.local` (detected, not printed),
+  but a live external email is held until owner says go. NOTE: the inbox screenshot the owner asked for
+  can't be produced by me — navi904133@gmail.com is not an inbox I can access; on go I'll fire the send
+  and report Resend's message-id/response, owner confirms receipt.
 - Not committed — working tree only.

@@ -1,14 +1,14 @@
 import { Section } from "@/components/shared/Section";
 import { ShieldBadge } from "@/components/shared/ShieldBadge";
 import { SnapIn } from "@/components/shared/SnapIn";
+import { ContactForm } from "@/components/ContactForm";
 import { site } from "@/data/site";
 
 // Chapter 05 — Contact. Forest field. Shield + "ROUTE 90 / DIGITAL SOLUTIONS"
 // wordmark and the tagline, then a two-column layout: the contact details block
-// (phone, email, location, hours from data/site.ts) on the left, and a RESERVED
-// slot for the contact form on the right — the form itself (React Hook Form +
-// Zod + Resend) is Phase 8; here it is only a bordered placeholder holding the
-// layout space so the section reads complete. Footer bar renders separately.
+// (phone, email, location, hours from data/site.ts) on the left, and the live
+// ContactForm (React Hook Form + Zod + Resend, Phase 8) on the right. Footer bar
+// renders separately.
 export function ContactSection() {
   const { contact, footer } = site;
 
@@ -63,33 +63,9 @@ export function ContactSection() {
           ))}
         </dl>
 
-        {/* Form placeholder slot — Phase 8 */}
-        <div className="flex flex-col gap-4 border-2 border-dashed border-cream/50 p-6">
-          <p className="font-mono text-xs uppercase tracking-widest text-mustard">
-            Contact form — reserved
-          </p>
-          <ul className="flex flex-col gap-3 opacity-60">
-            {[
-              contact.fields.name,
-              contact.fields.email,
-              contact.fields.business,
-              contact.fields.chapter,
-              contact.fields.message,
-            ].map((label) => (
-              <li
-                key={label}
-                className="border-2 border-cream/60 px-4 py-3 font-mono text-xs uppercase tracking-widest text-cream/70"
-              >
-                {label}
-              </li>
-            ))}
-            <li className="w-fit border-2 border-mustard bg-mustard/70 px-5 py-2 font-display text-sm uppercase tracking-wide text-ink">
-              {contact.submit}
-            </li>
-          </ul>
-          <p className="mt-auto font-mono text-[0.65rem] uppercase tracking-widest text-cream/50">
-            Wiring + Resend delivery — Phase 8.
-          </p>
+        {/* Live contact form */}
+        <div data-testid="contact-panel" className="border-2 border-cream p-6 sm:p-8">
+          <ContactForm />
         </div>
       </div>
     </Section>

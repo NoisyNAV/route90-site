@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Mockup export — visual/structural reference only, contains minified
     // third-party JS/CSS that must not be linted (see CLAUDE.md /reference note).
     "reference/**",
+    // Gitignored scratch dir: per-phase Playwright capture scripts + screenshots.
+    "review/**",
   ]),
 ]);
 
