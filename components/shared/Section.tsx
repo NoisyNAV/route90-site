@@ -31,7 +31,10 @@ export function Section({
         className,
       )}
     >
-      <div className="mx-auto w-full max-w-6xl">{children}</div>
+      {/* max-w-[1600px] matches the /reference mockup's site-wide wrapper and
+          the Hero container, so every section shares the same edges at desktop.
+          Padding stays on the outer <section> (px-6 sm:px-12) — unchanged. */}
+      <div className="mx-auto w-full max-w-[1600px]">{children}</div>
     </section>
   );
 }

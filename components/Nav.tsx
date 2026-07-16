@@ -14,7 +14,7 @@ export function Nav() {
       className="sticky top-0 z-50 border-b-2 border-dashed border-mustard bg-ink"
     >
       <GridTexture />
-      <div className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-4 sm:px-12">
+      <div className="relative mx-auto flex w-full max-w-[1600px] items-center justify-between gap-4 px-6 py-4 sm:px-12">
         {/* Wordmark lockup */}
         <a href="#top" className="flex items-center gap-3" aria-label="Route 90 Digital — home">
           <ShieldBadge size={32} />
