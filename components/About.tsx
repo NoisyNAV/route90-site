@@ -40,7 +40,7 @@ export function About() {
 
           {/* Right: pull-quote, body, tags */}
           <div className="flex flex-col gap-8 bg-cream p-8 text-ink md:col-span-7 sm:p-10">
-            <blockquote className="font-display text-2xl uppercase leading-[1.05] tracking-tight sm:text-3xl">
+            <blockquote className="font-display text-3xl uppercase leading-[1.05] tracking-tight sm:text-5xl">
               {quoteLead}
               {quoteTail ? (
                 <>
@@ -57,7 +57,7 @@ export function About() {
               ) : null}
             </blockquote>
 
-            <p className="max-w-prose font-body leading-relaxed text-ink/90">
+            <p className="max-w-prose font-body text-base leading-relaxed text-ink/90 sm:text-lg">
               {about.body}
             </p>
 

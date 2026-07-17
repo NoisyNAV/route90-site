@@ -18,11 +18,11 @@ export function ServicesSection() {
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <ChapterTag number="02" label="Services" />
-          <h2 className="mt-4 font-display text-5xl uppercase leading-[0.9] tracking-tight text-cream sm:text-6xl">
+          <h2 className="mt-4 font-display text-6xl uppercase leading-[0.85] tracking-tighter text-cream sm:text-8xl">
             Services
           </h2>
         </div>
-        <p className="max-w-sm font-body leading-relaxed text-cream/80 sm:text-right">
+        <p className="max-w-sm font-body text-base leading-relaxed text-cream/80 sm:text-right sm:text-lg">
           {servicesIntro}
         </p>
       </div>

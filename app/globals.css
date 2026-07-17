@@ -51,16 +51,21 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* TickerStrip marquee. Content is duplicated 2× inside the track; translating
-   the track -50% scrolls exactly one copy width, then loops seamlessly. Duration
-   matches the original Emergent export (28s linear). Disabled under reduced
-   motion — the strip then renders static, no scroll. */
+/* TickerStrip marquee. Content is duplicated 5× inside the track (see
+   TICKER_COPIES in TickerStrip.tsx) — 2 copies isn't wide enough to fill
+   the visible window on desktop viewports, which produced a blank-gap/pop
+   loop bug. Translating the track -20% (1/5) scrolls exactly one copy
+   width, then loops seamlessly, as long as 4 copies' width covers the
+   widest supported viewport. Duration matches the original Emergent
+   export (28s linear) — translating a smaller fraction of a wider track
+   keeps the same px/sec scroll speed. Disabled under reduced motion — the
+   strip then renders static, no scroll. */
 @keyframes marquee {
   from {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(-20%);
   }
 }
 .animate-marquee {
@@ -71,5 +76,11 @@ html.lenis body {
   .animate-marquee {
     animation: none;
     transform: none;
+  }
+  /* With the track frozen, only the first (non-aria-hidden) copy should be
+     visible — otherwise the static frame bleeds into the start of the next
+     duplicate copy on wide viewports. */
+  .animate-marquee > :not(:first-child) {
+    display: none;
   }
 }

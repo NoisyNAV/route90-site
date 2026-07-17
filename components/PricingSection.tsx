@@ -14,7 +14,7 @@ export function PricingSection() {
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <ChapterTag number="04" label="Pricing" className="text-forest" />
-          <h2 className="mt-4 font-display text-5xl uppercase leading-[0.9] tracking-tight text-ink sm:text-6xl">
+          <h2 className="mt-4 font-display text-6xl uppercase leading-[0.85] tracking-tighter text-ink sm:text-8xl">
             Pricing
           </h2>
         </div>
@@ -34,7 +34,7 @@ export function PricingSection() {
       </div>
 
       <div className="mt-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+        <p className="font-display text-2xl uppercase tracking-tight text-ink sm:text-3xl">
           {pricingNote}
         </p>
         <a

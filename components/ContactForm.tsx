@@ -115,7 +115,7 @@ export function ContactForm() {
   const submitting = status === "submitting";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
       {/* Honeypot — hidden from humans, off the a11y tree, not tab-focusable. */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
         <label htmlFor="website">Website</label>
@@ -128,7 +128,7 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="firstName" className={labelBase}>
             First Name
@@ -248,7 +248,7 @@ export function ContactForm() {
         </label>
         <textarea
           id="message"
-          rows={5}
+          rows={4}
           className={`mt-2 resize-y ${fieldBase} ${errors.message ? "border-mustard" : ""}`}
           aria-invalid={errors.message ? "true" : undefined}
           aria-describedby={errors.message ? "message-error" : undefined}

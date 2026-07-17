@@ -11,7 +11,18 @@ export const site = {
   nav: {
     // Service-category + location tags, not metaphors (kept per copy doc).
     // These feed the TickerStrip.
-    tags: ["Websites", "Apps", "Print", "Brand Systems", "Winnipeg", "Route 90"],
+    tags: [
+      "Websites",
+      "Apps",
+      "Print",
+      "Content",
+      "Digital Handling",
+      "Brand Systems",
+      "Winnipeg",
+      "Toronto",
+      "Canada",
+      "Route 90",
+    ],
     // Section anchors for the nav bar. Labels are the LOCKED section names from
     // CLAUDE.md's page order + the copy-doc renames (Who's Behind the Wheel →
     // About; The Miles → Services) — NOT the stale "Who"/"The Miles" labels in the
