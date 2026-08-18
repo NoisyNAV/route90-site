@@ -1,42 +1,26 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, animate, useReducedMotion } from "framer-motion";
+import { animate, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SnapIn } from "@/components/shared/SnapIn";
 import { WorkCard } from "@/components/WorkCard";
-import { WorkCardModal } from "@/components/WorkCardModal";
 import { work } from "@/data/work";
 import { SNAP } from "@/lib/motion";
 
 const ARROW_CLASSES =
   "flex h-11 w-11 shrink-0 items-center justify-center border-2 border-cream text-cream transition-colors hover:border-mustard hover:text-mustard focus:outline-none focus-visible:ring-2 focus-visible:ring-mustard focus-visible:ring-offset-2 focus-visible:ring-offset-forest disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-cream disabled:hover:text-cream";
 
-// Interactive Work track: collapsed cards that open into an expanded case-study
-// dialog. Holds the open item in state; AnimatePresence drives the dialog's
-// snap-in / exit. On close, focus is returned to the card that opened it (the
-// dialog itself traps focus while open). Track is unbounded — any N cards —
-// and never wraps to a second row: overflow pages via arrow buttons on
-// desktop (structural scroll, per lib/motion's SNAP) and native swipe/scroll-
-// snap on mobile, where the arrows are hidden entirely.
+// Interactive Work track: collapsed cards that link out to their dedicated
+// /work/[slug] case-study pages (the old in-place expand/modal is gone). Track
+// is unbounded — any N cards — and never wraps to a second row: overflow pages
+// via arrow buttons on desktop (structural scroll, per lib/motion's SNAP) and
+// native swipe/scroll-snap on mobile, where the arrows are hidden entirely.
 export function WorkGallery() {
-  const [activeSlug, setActiveSlug] = useState<string | null>(null);
-  const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
   const reduce = useReducedMotion();
-
-  const active = work.find((w) => w.slug === activeSlug) ?? null;
-
-  const close = useCallback(() => {
-    setActiveSlug((slug) => {
-      if (slug) {
-        requestAnimationFrame(() => triggerRefs.current[slug]?.focus());
-      }
-      return null;
-    });
-  }, []);
 
   const updateScrollState = useCallback(() => {
     const el = trackRef.current;
@@ -94,15 +78,11 @@ export function WorkGallery() {
         {work.map((item) => (
           <SnapIn
             key={item.slug}
-            className="w-full shrink-0 snap-start sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)]"
+            // flex-col so the card (flex-1) fills the track's stretched row
+            // height — keeps mixed web/mobile cards to an even height.
+            className="flex w-full shrink-0 snap-start flex-col sm:w-[calc(50%-10px)] lg:w-[calc((100%-40px)/3)]"
           >
-            <WorkCard
-              item={item}
-              ref={(el) => {
-                triggerRefs.current[item.slug] = el;
-              }}
-              onOpen={() => setActiveSlug(item.slug)}
-            />
+            <WorkCard item={item} />
           </SnapIn>
         ))}
       </div>
@@ -129,12 +109,6 @@ export function WorkGallery() {
           </button>
         </div>
       ) : null}
-
-      <AnimatePresence>
-        {active ? (
-          <WorkCardModal key={active.slug} item={active} onClose={close} />
-        ) : null}
-      </AnimatePresence>
     </>
   );
 }

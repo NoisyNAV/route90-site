@@ -196,6 +196,7 @@ export interface WorkItem {
   slug: string;
   title: string;
   status: "LIVE PROD" | "INTERNAL TOOL" | "COMMISSIONED";
+  platform: "web" | "mobile";  // determines WorkCard frame + collapsed layout
   thumbnail: string;
   cardDescription: string;   // short — collapsed card state
   description: string;       // full — expanded state
@@ -206,17 +207,75 @@ export interface WorkItem {
 
 **WorkItem note:** Split from a single `description` field on 2026-07-16 to
 support short teaser (collapsed) vs full case-study (expanded) card states.
+`platform` added 2026-07-17 — see "WorkCard frame rules (locked)" below.
 
 `work.ts` must be unbounded — the grid supports any number of items, not a
 fixed 3. More projects get added later.
 
 ---
 
+## WorkCard frame rules (locked — 2026-07-17, revised)
+
+The collapsed card is a `<Link href="/work/[slug]">` — clicking it navigates
+to a dedicated case-study page (see below), NOT an in-place modal/expand. It
+branches on the `WorkItem.platform` field:
+
+- **platform: "web"** — vertical stack. Browser-chrome frame (three
+  window-dots + a mono URL/slug label) on top, full card width,
+  `object-fit: cover` cropped to the fixed content-zone height. Title +
+  status bar and a 1-line-clamped `cardDescription` below the frame.
+
+- **platform: "mobile"** — horizontal split at the `sm` breakpoint and
+  above. Phone-screenshot frame (`object-fit: cover object-top`) that
+  cover-fills a fixed-width left column (~150px, `shrink-0` so the text
+  sibling can never compress it to icon size). Title + 5-line-clamped
+  `cardDescription` in the remaining right column. **Below `sm`, reverts to
+  the stacked layout** (frame on top full width, text below) — consistent
+  with the site-wide "boxy panels stack cleanly on mobile" rule.
+
+- **Both platforms**: the collapsed content zone is a FIXED 188px height
+  (excluding the green title/status bar) so grid rows stay uniform
+  regardless of platform. Both branches read it from ONE `CONTENT_ZONE_H`
+  constant via a `--zone` CSS var on the card root — never a magic number
+  duplicated per branch. The Work track is a single flex row (align
+  stretch), so all cards equalize to the tallest.
+
+- **Rounded-corner exception**: the phone-screenshot frame (card) and the
+  phone-bezel hero (case-study page) ONLY may use `border-radius` to read as
+  a physical device. This is the single deliberate exception to the "zero
+  border radius anywhere" rule — flag it in a code comment so it isn't
+  "fixed" later as a regression. No other element on the site gets rounded
+  corners.
+
+### Case-study pages (`/work/[slug]`)
+
+- App Router dynamic route, `generateStaticParams` + `dynamicParams = false`
+  — one static page per work item at build time, unknown slugs 404.
+- Full viewport, real page scroll. Large hero screenshot (phone-bezel for
+  mobile, browser-chrome for web), then the full `description` (not the
+  clamped `cardDescription`), then the rest of `media[]` if more than one,
+  then a styled "Back to Work" link that anchor-scrolls to `/#work`.
+- Same locked palette / hard borders / zero-radius-except-bezel — same
+  design system, different route. Server component (no client JS).
+
+Confirmed project platforms:
+- SplitHouse — mobile
+- BorderLog — mobile
+- Route90 Invoicer — web
+- Route90 Trucking (`route90-trucking`) — web
+
+---
+
 ## Contact
 
 - Phone: `647-807-9190`
-- Email: `hello@route90digital.ca` — **domain pending**, so the contact form
-  sends to `navi904133@gmail.com` meanwhile
+- Email (displayed on site): `route90digital@gmail.com`
+- Contact form send-to (`CONTACT_TO_EMAIL` env var, in `.env.local`,
+  gitignored): currently also `route90digital@gmail.com` — same mailbox as
+  the displayed address for now. `KNOWN-ISSUES.md` and
+  `docs/route90-BUILD-MANUAL.md` still say the send-to is
+  `navi904133@gmail.com`; that's stale against the current `.env.local` and
+  hasn't been reconciled yet.
 - Location: Winnipeg, MB · Canada
 - Hours: Mon–Fri · 9–5 CST
 

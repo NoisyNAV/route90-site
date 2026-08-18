@@ -5,6 +5,9 @@
 // Interface split 2026-07-16: cardDescription (short, collapsed card) vs description
 // (full, expanded card). See CLAUDE.md "WorkItem note".
 //
+// platform field 2026-07-17: "web" | "mobile" — drives WorkCard's collapsed frame
+// (browser-chrome vs phone-bezel) and layout. See CLAUDE.md "WorkCard frame rules".
+//
 // ⚠️ Thumbnails/media are placeholder 1×1 PNGs (KNOWN-ISSUES.md, launch blocker) —
 // real screenshots/video pending for all four. Filenames match each slug.
 //
@@ -17,6 +20,7 @@ export interface WorkItem {
   slug: string;
   title: string;
   status: "LIVE PROD" | "INTERNAL TOOL" | "COMMISSIONED";
+  platform: "web" | "mobile"; // determines WorkCard frame + collapsed layout
   thumbnail: string;
   cardDescription: string; // short — collapsed card state
   description: string; // full — expanded state
@@ -29,6 +33,7 @@ export const work: WorkItem[] = [
     slug: "splithouse",
     title: "SplitHouse",
     status: "LIVE PROD",
+    platform: "mobile",
     thumbnail: "/work/splithouse-thumb.png",
     cardDescription:
       "A household expense-splitting PWA with AI-powered receipt scanning — built with React, Vite, Supabase, and Claude.",
@@ -40,6 +45,7 @@ export const work: WorkItem[] = [
     slug: "route90-invoicer",
     title: "Route90 Invoicer",
     status: "LIVE PROD",
+    platform: "web",
     thumbnail: "/work/route90-invoicer-thumb.png",
     cardDescription:
       "Full-stack invoicing tool for trucking companies — PDF generation, Supabase auth/DB, and AI document scanning, built with Next.js.",
@@ -51,6 +57,7 @@ export const work: WorkItem[] = [
     slug: "borderlog",
     title: "BorderLog",
     status: "LIVE PROD",
+    platform: "mobile",
     thumbnail: "/work/borderlog-thumb.png",
     cardDescription:
       "BorderLog — a physical-presence tracker that helps Canadian permanent residents count their way to citizenship, built for people who live on the road.",
@@ -63,6 +70,7 @@ export const work: WorkItem[] = [
     slug: "route90-trucking",
     title: "Route90 Trucking — Dark-Mode Freight Website",
     status: "COMMISSIONED",
+    platform: "web",
     thumbnail: "/work/route90-trucking-thumb.png",
     cardDescription:
       "A full redesign of a Winnipeg-based trucking subcontractor's site, rebuilt from a standard 4-page light-theme template into a premium, Apple-inspired dark experience. Reduced to 3 focused pages, centered on an interactive Leaflet coverage map and a distraction-free multi-step quote wizard. Built with Next.js, TypeScript, Tailwind, and Framer Motion.",

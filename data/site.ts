@@ -3,9 +3,9 @@
 // and pricing lives in data/services.ts and data/pricing.ts respectively.
 //
 // Casing note: values are stored in natural case; the road-sign all-caps look
-// (e.g. HELLO@ROUTE90DIGITAL.CA) is applied in the UI via `uppercase`, not baked in.
-// Email shown is hello@route90digital.ca (domain pending); the contact form
-// actually SENDS to the gmail in .env.local (CONTACT_TO_EMAIL) until the domain lands.
+// (e.g. ROUTE90DIGITAL@GMAIL.COM) is applied in the UI via `uppercase`, not baked in.
+// Email shown is route90digital@gmail.com; the contact form actually SENDS to
+// whatever CONTACT_TO_EMAIL is set to in .env.local (currently the same address).
 
 export const site = {
   nav: {
@@ -81,7 +81,7 @@ export const site = {
   },
 
   footer: {
-    email: "hello@route90digital.ca", // display only; sends to CONTACT_TO_EMAIL
+    email: "route90digital@gmail.com", // display only; sends to CONTACT_TO_EMAIL
     phone: "647-807-9190",
     location: "Winnipeg, MB · Canada",
     hours: "Mon–Fri · 9–5 CST",

@@ -162,6 +162,7 @@ export interface WorkItem {
   slug: string;
   title: string;
   status: "LIVE PROD" | "INTERNAL TOOL" | "COMMISSIONED";
+  platform: "web" | "mobile";  // determines WorkCard frame + collapsed layout
   thumbnail: string;
   cardDescription: string;   // short — collapsed card state
   description: string;       // full — expanded state
@@ -174,6 +175,7 @@ export const work: WorkItem[] = [
     slug: "splithouse",
     title: "SplitHouse",
     status: "LIVE PROD",
+    platform: "mobile",
     thumbnail: "/work/splithouse-thumb.png",
     cardDescription:
       "A household expense-splitting PWA with AI-powered receipt scanning — built with React, Vite, Supabase, and Claude.",
