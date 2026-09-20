@@ -1,86 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  /* Route90 palette — exact, locked in CLAUDE.md. Do not adjust. */
-  --color-forest: #1F3A2E;
-  --color-ink: #0E0E0E;
-  --color-cream: #F0EAD6;
-  --color-mustard: #E8A824;
-
-  /* Zero border radius — structural, not per-utility. A stray rounded-* cannot
-     reintroduce corners because every radius token resolves to 0. */
-  --radius-xs: 0px;
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-  --radius-2xl: 0px;
-  --radius-3xl: 0px;
-
-  /* Type roles — "Interstate", locked in CLAUDE.md. The --font-* on the right are
-     set on <html> by next/font (see app/layout.tsx). Utilities font-display /
-     font-body / font-mono generate from these; --font-sans is the base default. */
-  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --color-ember-ink: #11100f;
+  --color-carbon: #1b1714;
+  --color-warm-cream: #f3ebdd;
+  --color-paper: #e7dccb;
+  --color-copper: #d8683e;
+  --color-ember: #f39a68;
+  --color-oxide: #713226;
+  --color-signal: #c8ff56;
+  --color-smoke: #a69b8e;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2rem;
+  --font-display: var(--font-fraunces), Georgia, serif;
   --font-body: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-martian-mono), ui-monospace, monospace;
   --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-body {
-  background: var(--color-ink);
-  color: var(--color-cream);
-  font-family: var(--font-body);
-}
-
-/* Lenis smooth scroll. The `lenis` class is added to <html> only when Lenis
-   initializes — under reduced motion it never does, so native scroll is kept. */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
-/* TickerStrip marquee. Content is duplicated 5× inside the track (see
-   TICKER_COPIES in TickerStrip.tsx) — 2 copies isn't wide enough to fill
-   the visible window on desktop viewports, which produced a blank-gap/pop
-   loop bug. Translating the track -20% (1/5) scrolls exactly one copy
-   width, then loops seamlessly, as long as 4 copies' width covers the
-   widest supported viewport. Duration matches the original Emergent
-   export (28s linear) — translating a smaller fraction of a wider track
-   keeps the same px/sec scroll speed. Disabled under reduced motion — the
-   strip then renders static, no scroll. */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-20%);
-  }
-}
-.animate-marquee {
-  animation: marquee 28s linear infinite;
-  will-change: transform;
-}
+* { box-sizing: border-box; }
+html { background: var(--color-ember-ink); color-scheme: dark; scroll-padding-top: 6rem; }
+body { margin: 0; background: var(--color-ember-ink); color: var(--color-warm-cream); font-family: var(--font-body); }
+::selection { background: var(--color-signal); color: var(--color-ember-ink); }
+:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 4px; }
+a, button, input, select, textarea { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
-    transform: none;
-  }
-  /* With the track frozen, only the first (non-aria-hidden) copy should be
-     visible — otherwise the static frame bleeds into the start of the next
-     duplicate copy on wide viewports. */
-  .animate-marquee > :not(:first-child) {
-    display: none;
-  }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }

@@ -29,14 +29,13 @@ blockers where marked.
 
 | Item | Introduced | Replaced by | Blocking launch? |
 |---|---|---|---|
-| `ShieldBadge.tsx` placeholder SVG | Phase 3 | Real logo asset (clean vector, owned) | **Yes** |
 | `/public/work/splithouse-*` (1×1 placeholder) | Phase 4 | Real SplitHouse screenshots/video | **Yes** |
 | `/public/work/route90-invoicer-*` (1×1 placeholder) | Phase 4 | Real Route90 Invoicer screenshots/video | **Yes** |
 | `/public/work/borderlog-*` (1×1 placeholder) | Phase 4 | Real BorderLog screenshots/video | **Yes** |
 | `/public/work/route90-trucking-*` (1×1 placeholder) | Phase 4 | Real Route90 Trucking screenshots/video | **Yes** |
-| Contact form send-to = `navi904133@gmail.com` | Phase 8 | `hello@route90digital.ca` once domain lands | No |
+| Contact form send-to = `route90digital@gmail.com` | Phase 8 | Domain mailbox once available | No |
 | Deployed at `*.vercel.app` | Phase 10 | `route90digital.ca` | No |
-| Favicon / OG image | — | Real assets | **Yes** |
+| Favicon | — | Final owned brand icon | **Yes** |
 
 ---
 
@@ -47,9 +46,7 @@ Things that aren't broken but are worth keeping an eye on.
 | Item | Why it's here |
 |---|---|
 | Framer Motion + Lenis bundle size | Two motion-adjacent libs. Check the bundle at Phase 9; if Lenis isn't earning its ~3kb, drop it. |
-| Contrast: mustard `#E8A824` on cream `#F0EAD6` | Likely fails WCAG AA for body text. Fine for large display type / borders — flag any small text using this pair at Phase 9. |
-| Contrast: cream on forest green | Should pass, but verify rather than assume at Phase 9. |
-| Work card focus trap | **Implemented in Phase 7** (`WorkCardModal`: focus moved in on open, Tab trapped, focus returned to the trigger on close, Escape + backdrop close). Kept on the watch list because it's easy to regress if the dialog is refactored — re-verify at the Phase 9 audit with a keyboard-only pass. |
+| Framer Motion hydration | Core content must never depend on a hidden initial state; anchor navigation previously exposed this failure mode. |
 
 ---
 
@@ -57,4 +54,5 @@ Things that aren't broken but are worth keeping an eye on.
 
 | # | Issue | Found | Fixed in | Notes |
 |---|---|---|---|---|
-| — | _(none yet)_ | | | |
+| 1 | Placeholder shield blocked launch | Phase 3 | Ember redesign | Shield retired; text wordmark is the approved identity treatment. |
+| 2 | Missing OG image and metadata | Phase 11 | Ember redesign | Added a 1200×630 local social card and Open Graph/Twitter metadata. |

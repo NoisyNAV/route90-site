@@ -1,41 +1,8 @@
 import { Section } from "@/components/shared/Section";
-import { ChapterTag } from "@/components/shared/ChapterTag";
-import { SnapIn } from "@/components/shared/SnapIn";
-import { DashedDivider } from "@/components/shared/DashedDivider";
+import { Reveal } from "@/components/shared/Reveal";
 import { ServicePanel } from "@/components/ServicePanel";
 import { services, servicesIntro } from "@/data/services";
 
-// Chapter 02 — Services. THE reference pattern every other section reuses:
-// color-blocked Section (ink/near-black field — verified against the original
-// Emergent export by pixel sampling — so the green-header/cream-body panels read
-// as objects on the base canvas) → header row (big display title left, intro
-// right) → dashed divider → a stack of hard-bordered ServicePanels, each snapping
-// in on scroll (once, reduced-motion safe via SnapIn). Content is mapped from
-// data/services.ts — verbatim, 01–05.
 export function ServicesSection() {
-  return (
-    <Section id="services" tone="ink">
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <ChapterTag number="02" label="Services" />
-          <h2 className="mt-4 font-display text-6xl uppercase leading-[0.85] tracking-tighter text-cream sm:text-8xl">
-            Services
-          </h2>
-        </div>
-        <p className="max-w-sm font-body text-base leading-relaxed text-cream/80 sm:text-right sm:text-lg">
-          {servicesIntro}
-        </p>
-      </div>
-
-      <DashedDivider className="mt-10 text-cream/60" />
-
-      <div className="mt-10 space-y-5 sm:space-y-6">
-        {services.map((service) => (
-          <SnapIn key={service.number}>
-            <ServicePanel service={service} />
-          </SnapIn>
-        ))}
-      </div>
-    </Section>
-  );
+  return <Section id="services" tone="dark"><div className="flex flex-col gap-8 border-b border-warm-cream/15 pb-14 md:flex-row md:items-end md:justify-between"><div><p className="mb-5 font-mono text-[10px] uppercase tracking-[.2em] text-signal">02 / Services</p><h2 className="font-display text-[clamp(3.5rem,8vw,8rem)] font-semibold leading-[.82] tracking-[-.07em]">Useful work,<br /><span className="text-copper">built to last.</span></h2></div><p className="max-w-sm text-pretty text-base leading-7 text-warm-cream/65">{servicesIntro}</p></div><div className="mt-16 space-y-24 sm:mt-24 sm:space-y-36">{services.map((service, index) => <Reveal key={service.number}><ServicePanel service={service} reverse={index % 2 === 1} /></Reveal>)}</div></Section>;
 }

@@ -54,10 +54,10 @@ _(nothing yet)_
 
 | Item | Blocking launch? |
 |---|---|
-| Real shield logo SVG replacing placeholder | Yes |
-| Real portfolio screenshots/video for all 3 projects | Yes |
-| Favicon + OG image | Yes |
-| Basic SEO metadata | Yes |
+| Real portfolio screenshots/video for all 4 projects | Yes |
+| Final owned favicon | Yes |
+| OG image | No — Ember social card added |
+| Basic SEO metadata | No — title, description, Open Graph, and Twitter card added |
 | Additional portfolio pieces from unused mockups | No — post-launch |
 | Domain purchased + connected | No — `.vercel.app` works meanwhile |
 | `hello@route90digital.ca` mailbox live | No — gmail works meanwhile |

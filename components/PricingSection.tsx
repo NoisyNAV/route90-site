@@ -1,49 +1,8 @@
 import { Section } from "@/components/shared/Section";
-import { ChapterTag } from "@/components/shared/ChapterTag";
-import { SnapIn } from "@/components/shared/SnapIn";
-import { DashedDivider } from "@/components/shared/DashedDivider";
+import { ArrowLink } from "@/components/shared/ArrowLink";
 import { PricingTable } from "@/components/PricingTable";
-import { pricing, pricingIntro, pricingCta, pricingNote } from "@/data/pricing";
+import { pricing, pricingCta, pricingIntro, pricingNote } from "@/data/pricing";
 
-// Chapter 04 — Pricing. Cream field. Header (title left, intro right) → dashed
-// divider → the pricing groups (each a bordered PricingTable, snapping in) →
-// CTA line + "Request a Quote" button → the "let's talk it through" footer note.
 export function PricingSection() {
-  return (
-    <Section id="pricing" tone="cream">
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <ChapterTag number="04" label="Pricing" className="text-forest" />
-          <h2 className="mt-4 font-display text-6xl uppercase leading-[0.85] tracking-tighter text-ink sm:text-8xl">
-            Pricing
-          </h2>
-        </div>
-        <p className="max-w-sm font-body leading-relaxed text-ink/80 sm:text-right">
-          {pricingIntro}
-        </p>
-      </div>
-
-      <DashedDivider className="mt-10 text-ink/50" />
-
-      <div className="mt-10 space-y-5 sm:space-y-6">
-        {pricing.map((group) => (
-          <SnapIn key={group.number}>
-            <PricingTable group={group} />
-          </SnapIn>
-        ))}
-      </div>
-
-      <div className="mt-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-display text-2xl uppercase tracking-tight text-ink sm:text-3xl">
-          {pricingNote}
-        </p>
-        <a
-          href="#contact"
-          className="shrink-0 border-2 border-ink bg-mustard px-6 py-3 font-display text-lg uppercase tracking-wide text-ink transition-colors duration-200 hover:bg-ink hover:text-mustard"
-        >
-          {pricingCta}
-        </a>
-      </div>
-    </Section>
-  );
+  return <Section id="pricing" tone="carbon"><div className="grid gap-14 lg:grid-cols-[.65fr_1.35fr] lg:gap-24"><div className="lg:sticky lg:top-32 lg:self-start"><p className="mb-5 font-mono text-[10px] uppercase tracking-[.2em] text-signal">04 / Pricing</p><h2 className="font-display text-[clamp(3.7rem,7vw,7rem)] font-semibold leading-[.84] tracking-[-.07em]">Clear<br />starting<br /><span className="text-copper">points.</span></h2><p className="mt-8 max-w-xs text-pretty text-base leading-7 text-warm-cream/60">{pricingIntro}</p><ArrowLink href="#contact" className="mt-10">{pricingCta}</ArrowLink><p className="mt-5 font-mono text-[9px] uppercase tracking-[.13em] text-smoke">{pricingNote}</p></div><div className="divide-y divide-warm-cream/15 border-y border-warm-cream/15">{pricing.map((group) => <PricingTable key={group.number} group={group} />)}</div></div></Section>;
 }

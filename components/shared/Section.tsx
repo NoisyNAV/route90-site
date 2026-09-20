@@ -6,9 +6,9 @@ import { cn } from "@/lib/cn";
 // grid-pattern texture is a Hero/Nav-only treatment (CLAUDE.md), so it is NOT
 // applied here; "ink" as a section field stays flat. Server component.
 const tones = {
-  forest: "bg-forest text-cream",
-  cream: "bg-cream text-ink",
-  ink: "bg-ink text-cream",
+  dark: "bg-ember-ink text-warm-cream",
+  carbon: "bg-carbon text-warm-cream",
+  paper: "bg-paper text-ember-ink",
 } as const;
 
 export function Section({
@@ -26,7 +26,7 @@ export function Section({
     <section
       id={id}
       className={cn(
-        "w-full scroll-mt-16 px-6 py-20 sm:px-12 sm:py-28",
+        "w-full scroll-mt-24 px-4 pb-28 pt-24 sm:px-8 sm:pb-36 sm:pt-32 lg:px-12",
         tones[tone],
         className,
       )}
@@ -34,7 +34,7 @@ export function Section({
       {/* max-w-[1600px] matches the /reference mockup's site-wide wrapper and
           the Hero container, so every section shares the same edges at desktop.
           Padding stays on the outer <section> (px-6 sm:px-12) — unchanged. */}
-      <div className="mx-auto w-full max-w-[1600px]">{children}</div>
+      <div className="mx-auto w-full max-w-[1440px]">{children}</div>
     </section>
   );
 }

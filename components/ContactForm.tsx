@@ -16,10 +16,10 @@ import { site } from "@/data/site";
 // 2px cream borders, zero radius, no shadow. Submits JSON to /api/contact.
 
 const fieldBase =
-  "w-full border-2 border-cream bg-ink px-4 py-3 font-body text-cream placeholder:text-cream/40 focus:border-mustard focus:outline-none";
+  "w-full rounded-xl border border-warm-cream/15 bg-ember-ink/55 px-4 py-3.5 font-body text-warm-cream placeholder:text-smoke focus:border-signal focus:outline-none focus-visible:ring-2 focus-visible:ring-signal/40";
 const labelBase =
-  "block font-mono text-xs uppercase tracking-widest text-cream/80";
-const errorText = "mt-1 font-mono text-xs uppercase tracking-wide text-mustard";
+  "block font-mono text-[9px] uppercase tracking-[.16em] text-warm-cream/60";
+const errorText = "mt-1 font-mono text-[9px] uppercase tracking-wide text-ember";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -90,21 +90,21 @@ export function ContactForm() {
         ref={successRef}
         role="status"
         tabIndex={-1}
-        className="border-2 border-mustard bg-forest p-8 focus:outline-none"
+        className="rounded-2xl border border-signal/40 bg-signal/10 p-8 focus:outline-none"
       >
-        <p className="font-mono text-xs uppercase tracking-widest text-mustard">
+        <p className="font-mono text-xs uppercase tracking-widest text-signal">
           Message sent
         </p>
-        <p className="mt-4 font-display text-2xl uppercase tracking-tight text-cream">
+        <p className="mt-4 font-display text-3xl font-semibold tracking-tight text-warm-cream">
           Thanks — we&apos;ll be in touch soon.
         </p>
-        <p className="mt-3 font-body text-cream/80">
+        <p className="mt-3 font-body text-warm-cream/70">
           Your message is on its way. We usually reply within a business day.
         </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-6 border-2 border-cream px-5 py-2 font-mono text-xs uppercase tracking-widest text-cream transition-colors hover:border-mustard hover:text-mustard"
+          className="mt-6 rounded-full border border-warm-cream/20 px-5 py-2 font-mono text-xs uppercase tracking-widest text-warm-cream transition-colors hover:border-signal hover:text-signal"
         >
           Send another
         </button>
@@ -135,7 +135,8 @@ export function ContactForm() {
           </label>
           <input
             id="firstName"
-            className={`mt-2 ${fieldBase} ${errors.firstName ? "border-mustard" : ""}`}
+            autoComplete="given-name"
+            className={`mt-2 ${fieldBase} ${errors.firstName ? "border-ember" : ""}`}
             aria-invalid={errors.firstName ? "true" : undefined}
             aria-describedby={errors.firstName ? "firstName-error" : undefined}
             {...register("firstName")}
@@ -158,7 +159,8 @@ export function ContactForm() {
           </label>
           <input
             id="lastName"
-            className={`mt-2 ${fieldBase} ${errors.lastName ? "border-mustard" : ""}`}
+            autoComplete="family-name"
+            className={`mt-2 ${fieldBase} ${errors.lastName ? "border-ember" : ""}`}
             aria-invalid={errors.lastName ? "true" : undefined}
             aria-describedby={errors.lastName ? "lastName-error" : undefined}
             {...register("lastName")}
@@ -180,7 +182,9 @@ export function ContactForm() {
         <input
           id="email"
           type="email"
-          className={`mt-2 ${fieldBase} ${errors.email ? "border-mustard" : ""}`}
+          autoComplete="email"
+          spellCheck={false}
+          className={`mt-2 ${fieldBase} ${errors.email ? "border-ember" : ""}`}
           aria-invalid={errors.email ? "true" : undefined}
           aria-describedby={errors.email ? "email-error" : undefined}
           {...register("email")}
@@ -196,11 +200,12 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="business" className={labelBase}>
-          Business Name <span className="text-cream/40">(optional)</span>
+          Business Name <span className="text-smoke">(optional)</span>
         </label>
         <input
           id="business"
-          className={`mt-2 ${fieldBase} ${errors.business ? "border-mustard" : ""}`}
+          autoComplete="organization"
+          className={`mt-2 ${fieldBase} ${errors.business ? "border-ember" : ""}`}
           aria-invalid={errors.business ? "true" : undefined}
           aria-describedby={errors.business ? "business-error" : undefined}
           {...register("business")}
@@ -216,11 +221,12 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="service" className={labelBase}>
-          Service <span className="text-cream/40">(optional)</span>
+          Service <span className="text-smoke">(optional)</span>
         </label>
         <select
           id="service"
-          className={`mt-2 ${fieldBase} ${errors.service ? "border-mustard" : ""}`}
+          autoComplete="off"
+          className={`mt-2 ${fieldBase} ${errors.service ? "border-ember" : ""}`}
           defaultValue=""
           aria-invalid={errors.service ? "true" : undefined}
           aria-describedby={errors.service ? "service-error" : undefined}
@@ -248,8 +254,9 @@ export function ContactForm() {
         </label>
         <textarea
           id="message"
+          autoComplete="off"
           rows={4}
-          className={`mt-2 resize-y ${fieldBase} ${errors.message ? "border-mustard" : ""}`}
+          className={`mt-2 resize-y ${fieldBase} ${errors.message ? "border-ember" : ""}`}
           aria-invalid={errors.message ? "true" : undefined}
           aria-describedby={errors.message ? "message-error" : undefined}
           {...register("message")}
@@ -266,7 +273,7 @@ export function ContactForm() {
       {status === "error" && serverError ? (
         <div
           role="alert"
-          className="border-2 border-mustard bg-mustard/10 px-4 py-3 font-mono text-xs uppercase tracking-wide text-mustard"
+          className="rounded-xl border border-ember/40 bg-ember/10 px-4 py-3 font-mono text-xs uppercase tracking-wide text-ember"
         >
           {serverError}
         </div>
@@ -275,7 +282,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="w-fit border-2 border-mustard bg-mustard px-8 py-3 font-display text-lg uppercase tracking-wide text-ink transition-colors hover:bg-transparent hover:text-mustard disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-mustard disabled:hover:text-ink"
+        className="w-fit rounded-full bg-signal px-7 py-3.5 font-body text-sm font-semibold text-ember-ink transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? "Sending…" : site.contact.submit}
       </button>

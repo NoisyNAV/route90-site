@@ -1,48 +1,16 @@
-import { ShieldBadge } from "@/components/shared/ShieldBadge";
-import { GridTexture } from "@/components/shared/GridTexture";
+import { MobileNav } from "@/components/MobileNav";
 import { site } from "@/data/site";
 
-// Sticky top nav on the near-black base canvas with the grid texture (continuous
-// with the Hero below it). Left: shield + "ROUTE 90 DIGITAL" wordmark lockup.
-// Right-of-center: section links (data/site.ts). Top-right: mustard "Get in Touch"
-// button. Hard dashed-mustard bottom edge, zero radius. Border weight 2px and the
-// hover-invert button match the patterns established in Phase 5.
 export function Nav() {
   return (
-    <header
-      id="top"
-      className="sticky top-0 z-50 border-b-2 border-dashed border-mustard bg-ink"
-    >
-      <GridTexture />
-      <div className="relative mx-auto flex w-full max-w-[1600px] items-center justify-between gap-4 px-6 py-4 sm:px-12">
-        {/* Wordmark lockup */}
-        <a href="#top" className="flex items-center gap-3" aria-label="Route 90 Digital — home">
-          <ShieldBadge size={32} />
-          <span className="font-display text-lg uppercase leading-none tracking-tight text-cream sm:text-xl">
-            Route 90 <span className="text-mustard">Digital</span>
-          </span>
-        </a>
-
-        {/* Section links, right-of-center */}
-        <nav className="hidden items-center gap-1 md:flex">
-          {site.nav.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="border-2 border-transparent px-4 py-2 font-mono text-xs uppercase tracking-widest text-cream transition-colors duration-200 hover:border-mustard hover:text-mustard"
-            >
-              {link.label}
-            </a>
-          ))}
+    <header id="top" className="pointer-events-none fixed inset-x-0 top-0 z-40 px-4 pt-4 sm:px-8 sm:pt-6">
+      <div className="pointer-events-auto mx-auto flex max-w-[1440px] items-center justify-between rounded-full border border-warm-cream/15 bg-ember-ink/88 px-4 py-2.5 shadow-[0_18px_70px_rgb(42_20_13/0.35)] backdrop-blur-xl sm:px-5">
+        <a href="#top" aria-label="Route90 Digital — home" className="font-mono text-xs font-semibold tracking-[0.18em] text-warm-cream">R90 <span className="text-copper">/</span> DIGITAL</a>
+        <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
+          {site.nav.links.map((link) => <a key={link.href} href={link.href} className="font-body text-sm text-warm-cream/70 transition-colors duration-300 hover:text-warm-cream">{link.label}</a>)}
         </nav>
-
-        {/* CTA */}
-        <a
-          href={site.nav.ctaHref}
-          className="border-2 border-mustard bg-mustard px-4 py-2 font-display text-sm uppercase tracking-wide text-ink transition-colors duration-200 hover:bg-transparent hover:text-mustard md:px-6"
-        >
-          {site.nav.cta}
-        </a>
+        <div className="hidden md:block"><a href={site.nav.ctaHref} className="rounded-full bg-signal px-5 py-2.5 font-body text-sm font-semibold text-ember-ink transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0">{site.nav.cta}</a></div>
+        <MobileNav />
       </div>
     </header>
   );

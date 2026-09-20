@@ -1,47 +1,6 @@
 import type { Service } from "@/data/services";
-import { DiamondBullet } from "@/components/shared/DiamondBullet";
+import { ServiceVisual } from "@/components/ServiceVisual";
 
-// One service as a hard-bordered panel: a forest-green header bar (plain number
-// badge — the word "MILE" appears nowhere on this site — title, and the verbatim
-// `priceFrom` in mustard) over a cream body (description left, feature list right).
-// Zero radius, 2px cream borders (contrast against this section's ink field —
-// matches WorkCard/ContactSection's convention on dark fields), no shadow —
-// locked visual rules (CLAUDE.md). Server component: motion is applied by the
-// SnapIn wrapper in ServicesSection.
-export function ServicePanel({ service }: { service: Service }) {
-  const { number, title, description, features, priceFrom } = service;
-
-  return (
-    <article className="border-2 border-cream bg-cream">
-      {/* Green header bar */}
-      <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 border-b-2 border-cream bg-forest px-4 py-4 sm:px-6 sm:py-5">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <span className="border-2 border-mustard px-2 py-1 font-mono text-xs leading-none text-mustard sm:text-sm">
-            {number}
-          </span>
-          <h3 className="font-display text-2xl uppercase leading-none tracking-tight text-cream sm:text-4xl">
-            {title}
-          </h3>
-        </div>
-        <span className="font-mono text-sm uppercase tracking-wide text-mustard sm:text-base">
-          {priceFrom}
-        </span>
-      </header>
-
-      {/* Cream body: description left, includes-list right */}
-      <div className="grid gap-6 px-4 py-6 sm:grid-cols-[1fr_auto] sm:gap-10 sm:px-6 sm:py-8">
-        <p className="max-w-prose font-body text-base leading-relaxed text-ink/90 sm:text-lg">
-          {description}
-        </p>
-        <ul className="space-y-2.5 border-t-2 border-dashed border-ink/40 pt-6 font-mono text-xs uppercase tracking-wide text-ink sm:min-w-[16rem] sm:border-t-0 sm:border-l-2 sm:border-dashed sm:pt-0 sm:pl-10">
-          {features.map((feature) => (
-            <li key={feature} className="flex items-start gap-2.5">
-              <DiamondBullet />
-              <span className="leading-snug">{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </article>
-  );
+export function ServicePanel({ service, reverse = false }: { service: Service; reverse?: boolean }) {
+  return <article className="group grid items-center gap-10 lg:grid-cols-2 lg:gap-20"><div className={reverse ? "lg:order-2" : ""}><ServiceVisual number={service.number} /></div><div className={reverse ? "lg:order-1" : ""}><div className="mb-8 flex items-center justify-between border-b border-warm-cream/15 pb-5"><span className="font-mono text-xs tracking-[.18em] text-signal">{service.number}</span><span className="font-mono text-[10px] uppercase tracking-[.14em] text-smoke">{service.priceFrom}</span></div><h3 className="text-balance font-display text-[clamp(2.6rem,5vw,5.5rem)] font-semibold leading-[.9] tracking-[-.055em]">{service.title}</h3><p className="text-pretty mt-7 max-w-xl text-base leading-7 text-warm-cream/68">{service.description}</p><ul className="mt-9 grid gap-3 sm:grid-cols-2">{service.features.map((feature) => <li key={feature} className="flex items-start gap-3 text-sm text-warm-cream/75"><span className="mt-2 size-1.5 shrink-0 rounded-full bg-copper" aria-hidden="true" />{feature}</li>)}</ul></div></article>;
 }

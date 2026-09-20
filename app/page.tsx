@@ -1,9 +1,5 @@
-// Phase 6 — the full single-page assembly in the locked order (CLAUDE.md):
-// Nav → Hero → TickerStrip → About (Ch01) → Services (Ch02) → Work (Ch03,
-// placeholder) → Pricing (Ch04) → Contact (Ch05) → Footer. Section background
-// sequence follows the pixel-verified tone map: ink+grid → mustard → cream →
-// ink → forest → cream → forest. The contact form (Phase 8) and the expandable
-// Work cards (Phase 7) are reserved placeholders.
+// Single-page composition. Content order remains direct and conversion-focused;
+// visuals follow the Ember Editorial system approved 2026-09-19.
 
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
@@ -18,8 +14,11 @@ import { Footer } from "@/components/Footer";
 export default function Home() {
   return (
     <>
+      <a href="#main-content" className="fixed left-4 top-4 z-50 -translate-y-24 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-ember-ink transition-transform focus:translate-y-0">
+        Skip to content
+      </a>
       <Nav />
-      <main>
+      <main id="main-content">
         <Hero />
         <TickerStrip />
         <About />

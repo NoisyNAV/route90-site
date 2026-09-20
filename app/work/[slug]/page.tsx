@@ -2,212 +2,28 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ShieldBadge } from "@/components/shared/ShieldBadge";
+import { EmberBackdrop } from "@/components/shared/EmberBackdrop";
 import { Footer } from "@/components/Footer";
 import { work, type WorkItem } from "@/data/work";
 
-// Dedicated case-study route, one static page per work item. Replaces the old
-// in-card expand/modal. Real page scroll, locked palette + hard borders + zero
-// radius (the phone-bezel radius being the one locked exception). Server
-// component throughout — no client JS needed.
-
-// Only the 4 known slugs get pages; anything else 404s (no client-side routing).
 export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return work.map((item) => ({ slug: item.slug }));
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export function generateStaticParams() { return work.map((item) => ({ slug: item.slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const item = work.find((w) => w.slug === slug);
-  if (!item) return { title: "Case study — Route90 Digital" };
-  return {
-    title: `${item.title} — Route90 Digital`,
-    description: item.cardDescription,
-  };
+  const item = work.find((entry) => entry.slug === slug);
+  return item ? { title: item.title, description: item.cardDescription } : { title: "Case study" };
 }
 
-// Large hero frame — browser-chrome for web projects, phone-bezel for mobile.
-// Mirrors the collapsed WorkCard motifs, blown up to a readable size.
-function HeroFrame({ item, src }: { item: WorkItem; src: string }) {
-  if (item.platform === "mobile") {
-    return (
-      <div className="mx-auto w-full max-w-[320px]">
-        {/* ROUNDED-CORNER EXCEPTION — the phone bezel is the one element on this
-            site allowed a border-radius (CLAUDE.md "WorkCard frame rules"). */}
-        <div className="relative aspect-[1290/2796] w-full overflow-hidden rounded-[32px] border-2 border-cream bg-ink">
-          <Image
-            src={src}
-            alt={`${item.title} — app screenshot`}
-            fill
-            sizes="(max-width: 640px) 90vw, 320px"
-            className="object-cover object-top"
-            priority
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="mx-auto w-full max-w-[1100px] border-2 border-cream bg-ink">
-      {/* Browser chrome bar */}
-      <div className="flex items-center gap-2 border-b-2 border-cream px-4 py-3">
-        <span className="h-2.5 w-2.5 rotate-45 bg-mustard" aria-hidden="true" />
-        <span className="h-2.5 w-2.5 rotate-45 bg-cream" aria-hidden="true" />
-        <span
-          className="h-2.5 w-2.5 rotate-45 border-2 border-cream"
-          aria-hidden="true"
-        />
-        <span className="ml-3 truncate font-mono text-xs tracking-widest text-cream/60">
-          {item.link
-            ? item.link.replace(/^https?:\/\//, "")
-            : `route90 · ${item.slug}`}
-        </span>
-      </div>
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-ink">
-        <Image
-          src={src}
-          alt={`${item.title} — screenshot`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 1100px"
-          className="object-cover object-top"
-          priority
-        />
-      </div>
-    </div>
-  );
+function ProjectFrame({ item, src }: { item: WorkItem; src: string }) {
+  if (item.platform === "mobile") return <div className="mx-auto w-full max-w-[360px] rounded-[2.5rem] border border-warm-cream/18 bg-carbon p-2 shadow-[0_35px_120px_rgb(45_18_10/0.45)]"><div className="relative aspect-[1290/2796] overflow-hidden rounded-[2rem]"><Image src={src} alt={`${item.title} app screenshot`} fill priority sizes="(max-width: 640px) 88vw, 360px" className="object-cover object-top" /></div></div>;
+  return <div className="overflow-hidden rounded-[1.75rem] border border-warm-cream/15 bg-carbon shadow-[0_35px_120px_rgb(45_18_10/0.45)]"><div className="flex items-center gap-2 border-b border-warm-cream/12 px-5 py-4"><span className="size-2 rounded-full bg-copper" /><span className="size-2 rounded-full bg-warm-cream/35" /><span className="ml-3 font-mono text-[9px] tracking-[.14em] text-warm-cream/45">{item.link ? item.link.replace(/^https?:\/\//, "") : `route90 / ${item.slug}`}</span></div><div className="relative aspect-[16/10]"><Image src={src} alt={`${item.title} screenshot`} fill priority sizes="(max-width: 1024px) 100vw, 1100px" className="object-cover object-top" /></div></div>;
 }
 
-export default async function CaseStudyPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = work.find((w) => w.slug === slug);
+  const item = work.find((entry) => entry.slug === slug);
   if (!item) notFound();
-
   const heroSrc = item.media[0]?.src ?? item.thumbnail;
   const extraMedia = item.media.slice(1);
-
-  return (
-    <div className="min-h-screen bg-ink text-cream">
-      {/* Site chrome — shield home link + styled back link (not a bare browser
-          back). Dashed mustard underline matches the homepage Nav. */}
-      <header className="sticky top-0 z-50 border-b-2 border-dashed border-mustard bg-ink">
-        <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between gap-4 px-6 py-4 sm:px-12">
-          <Link
-            href="/#top"
-            className="flex items-center gap-3"
-            aria-label="Route 90 Digital — home"
-          >
-            <ShieldBadge size={32} />
-            <span className="font-display text-lg uppercase leading-none tracking-tight text-cream sm:text-xl">
-              Route 90 <span className="text-mustard">Digital</span>
-            </span>
-          </Link>
-          <Link
-            href="/#work"
-            className="border-2 border-cream px-4 py-2 font-mono text-xs uppercase tracking-widest text-cream transition-colors duration-200 hover:border-mustard hover:text-mustard"
-          >
-            ← Back to Work
-          </Link>
-        </div>
-      </header>
-
-      <main>
-        {/* Hero — title/status + large framed screenshot on the ink canvas */}
-        <section className="px-6 py-16 sm:px-12 sm:py-20">
-          <div className="mx-auto w-full max-w-[1600px]">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-mustard">
-              Case Study
-            </p>
-            <div className="mt-4 flex flex-wrap items-center gap-4">
-              <h1 className="font-display text-4xl uppercase leading-[0.95] tracking-tight text-cream sm:text-6xl">
-                {item.title}
-              </h1>
-              <span className="shrink-0 border-2 border-mustard px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-widest text-mustard">
-                {item.status}
-              </span>
-            </div>
-
-            <div className="mt-12">
-              <HeroFrame item={item} src={heroSrc} />
-            </div>
-          </div>
-        </section>
-
-        {/* Full write-up — cream panel for long-form legibility */}
-        <section className="bg-cream px-6 py-16 text-ink sm:px-12 sm:py-20">
-          <div className="mx-auto w-full max-w-[820px]">
-            <p className="whitespace-pre-line font-body text-lg leading-relaxed">
-              {item.description}
-            </p>
-
-            {item.link ? (
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-10 inline-block border-2 border-mustard bg-mustard px-6 py-3 font-display text-base uppercase tracking-wide text-ink transition-colors hover:bg-transparent hover:text-forest focus:outline-none focus-visible:ring-2 focus-visible:ring-forest"
-              >
-                View Project ↗
-              </a>
-            ) : null}
-          </div>
-        </section>
-
-        {/* Remaining media, if any — forest field */}
-        {extraMedia.length > 0 ? (
-          <section className="bg-forest px-6 py-16 sm:px-12 sm:py-20">
-            <div className="mx-auto flex w-full max-w-[1000px] flex-col gap-8">
-              {extraMedia.map((m, i) =>
-                m.type === "video" ? (
-                  <video
-                    key={m.src}
-                    src={m.src}
-                    controls
-                    className="w-full border-2 border-cream bg-ink"
-                  />
-                ) : (
-                  <div
-                    key={m.src}
-                    className="relative aspect-video w-full overflow-hidden border-2 border-cream bg-ink"
-                  >
-                    <Image
-                      src={m.src}
-                      alt={`${item.title} — screenshot ${i + 2}`}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 1000px"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                ),
-              )}
-            </div>
-          </section>
-        ) : null}
-
-        {/* Foot of page back link — anchor-scrolls to the Work grid on home */}
-        <section className="px-6 py-16 sm:px-12">
-          <div className="mx-auto w-full max-w-[1600px]">
-            <Link
-              href="/#work"
-              className="inline-block border-2 border-cream px-6 py-3 font-display text-base uppercase tracking-wide text-cream transition-colors hover:border-mustard hover:text-mustard focus:outline-none focus-visible:ring-2 focus-visible:ring-mustard"
-            >
-              ← Back to all work
-            </Link>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
-  );
+  return <div className="min-h-screen bg-ember-ink text-warm-cream"><header className="fixed inset-x-0 top-0 z-30 px-4 pt-4 sm:px-8"><div className="mx-auto flex max-w-[1440px] items-center justify-between rounded-full border border-warm-cream/15 bg-ember-ink/90 px-5 py-3 backdrop-blur-xl"><Link href="/#top" className="font-mono text-xs tracking-[.16em]">R90 <span className="text-copper">/</span> DIGITAL</Link><Link href="/#work" className="font-body text-sm text-warm-cream/65 hover:text-signal">← Back to work</Link></div></header><main><section className="relative overflow-hidden px-4 pb-24 pt-40 sm:px-8 sm:pb-32 sm:pt-48 lg:px-12"><EmberBackdrop className="opacity-70" /><div className="relative mx-auto max-w-[1440px]"><p className="font-mono text-[10px] uppercase tracking-[.2em] text-signal">Case study / {item.status}</p><h1 className="text-balance mt-7 max-w-6xl font-display text-[clamp(4rem,9vw,9rem)] font-semibold leading-[.82] tracking-[-.07em]">{item.title}</h1><div className="mt-16"><ProjectFrame item={item} src={heroSrc} /></div></div></section><section className="bg-paper px-4 py-24 text-ember-ink sm:px-8 sm:py-32"><div className="mx-auto max-w-[820px]"><p className="whitespace-pre-line text-pretty text-lg leading-8 sm:text-xl sm:leading-9">{item.description}</p>{item.link ? <a href={item.link} target="_blank" rel="noopener noreferrer" className="mt-10 inline-flex rounded-full bg-ember-ink px-6 py-3 text-sm font-semibold text-warm-cream hover:bg-oxide">View project ↗</a> : null}</div></section>{extraMedia.length ? <section className="px-4 py-24 sm:px-8"><div className="mx-auto flex max-w-[1100px] flex-col gap-8">{extraMedia.map((media, index) => media.type === "video" ? <video key={media.src} src={media.src} controls className="w-full rounded-2xl border border-warm-cream/15" /> : <div key={media.src} className="relative aspect-video overflow-hidden rounded-2xl"><Image src={media.src} alt={`${item.title} screenshot ${index + 2}`} fill sizes="(max-width: 1024px) 100vw, 1100px" className="object-cover object-top" /></div>)}</div></section> : null}<section className="px-4 py-20 text-center sm:px-8"><Link href="/#work" className="inline-flex rounded-full border border-warm-cream/20 px-6 py-3 text-sm text-warm-cream hover:border-signal hover:text-signal">← Back to all work</Link></section></main><Footer /></div>;
 }
